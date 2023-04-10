@@ -1,0 +1,26 @@
+{% extends 'master.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <div id="div_id_title" class="mb-3"><label for="id_title" class="form-label requiredField">
+            genre<span class="asteriskField"></span> </label> <input type="text" name="title" maxlength="100" value=" {{user.profile.genre}}"
+                                                                     class="textinput form-control" readonly
+                                                                     id="id_title"></div>
+        <div id="div_id_title" class="mb-3"><label for="id_title" class="form-label requiredField">
+            Title<span class="asteriskField"></span> </label> <input type="text" name="title" maxlength="100"
+                                                                     class="textinput form-control"
+                                                                     id="id_title"></div>
+        <div id="div_id_summary" class="mb-3"><label for="id_summary" class="form-label requiredField">
+            Summary<span class="asteriskField"></span> </label> <textarea name="summary" cols="40" rows="10"
+                                                                          class="textarea form-control"
+                                                                          id="id_summary"></textarea></div>
+        <div class="form-group">
+            <button class="btn btn-outline-info" name="save-content" type="submit">Save</button>
+            <button class="btn btn-outline-info" name="draft-content" type="submit">Draft</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

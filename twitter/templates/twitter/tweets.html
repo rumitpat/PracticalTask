@@ -1,0 +1,109 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<style>
+    .card-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #5f788a;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-subtitle {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card-icon {
+        margin-left: 10px;
+        font-size: 16px;
+    }
+
+    .card-icon i {
+        color: white;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card-link:hover .card-icon i {
+        transform: translateX(5px);
+    }
+
+
+</style>
+<h1>Trending Topic</h1>
+{% if twitter_posts %}
+<div class="row">
+    {% for tweet in page_obj %}
+    <div class="col-sm-12 col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <img class="profile-pic" src="{{ tweet.profile_image_url }}" alt="profile picture">
+                <h5 class="card-title">Username: {{ tweet.name }}</h5>
+                <h5 class="card-title">Screen Name:: {{ tweet.screen_name }}</h5>
+            </div>
+            <a class="card-link" href="{{ tweet.url }}">
+                <h5 class="card-subtitle mb-2">Click here to go to tweet</h5>
+                <span class="card-icon"><i class="fas fa-external-link-alt"></i></span>
+            </a>
+            <div class="card-body">
+                <p class="card-text">{{ tweet.text }}</p>
+            </div>
+
+            <div class="card-footer">
+                <p class="card-text">{{ tweet.created_at }}</p>
+                <button class="btn btn-primary" style="width: 100px;">&#x2764; {{ tweet.favorite_count }}</button>
+                <button class="btn btn-secondary">Retweet</button>
+                <button class="btn btn-info">Reply</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No tweets found.</p>
+{% endif %}
+
+<div class="real-time-tweets">
+    <h3>Latest Tweets</h3>
+    <div class="tweet-container">
+        <!-- tweets will be dynamically added here -->
+    </div>
+</div>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        {% for page in page_obj.paginator.page_range %}
+        {% if page_obj.number == page %}
+        <li class="page-item active">
+            <a class="page-link" href="#">{{ page }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock content %}
